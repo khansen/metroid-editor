@@ -1,0 +1,98 @@
+106:    lower health digit in upper four bits
+107:    upper health digit in lower four bits
+
+Samus animation registers (CPU addresses)
+
+0300:   Samus status bits
+
+        Bit 0: Running
+        Bit 1: Jumping
+        Bit 2: Pointing upwards
+        Bit 0 & 1 combined: Ball
+
+0304:   Frame countdown value. This value is decremented every frame.
+        When it reaches 0, the animation advances to the next frame, and
+        this counter is reset to its original value.
+0305:   Frame index reset value. This is the initial index into the
+        animation data table.
+0306:   Current frame index value. This value is incremented every time
+        0304 reaches 0. When the data it points to is FF, this value is
+        set to 0305 (the animation starts from the beginning again).
+
+030C:   Which nametable Samus is currently in (0 or 1).
+030D:   Samus' vertical position.
+030E:   Samus' horizontal position.
+
+
+Samus frame data
+----------------
+
+Byte 0:
+
+vhcc????
+
+v:  1 = Flip vertically
+h:  1 = Flip horizontally
+cc: Sprite palette #
+
+FD: New line followed by control byte
+FE: "Space" (no sprite, just skip to next position)
+FF: End of data
+
+Control byte:
+
+??????cc
+
+cc: Sprite palette #
+
+4711: Vertical position of upper left Samus sprite
+4712: Horiz. pos.
+
+%aaaabbbb
+
+aaaa: Y / 8
+bbbb: Finetune
+
+------------------
+
+1E715: and #$07 ; checks if it's time to update screen
+
+music
+-----
+
+(RAM)
+
+$0630: ptr to chn#0 data
+$0632: ptr to chn#1 data
+$0634: ptr to chn#2 data
+$0636: ptr to chn#3 data
+
+channel data format:
+
+divided in chunks, separated by FF.
+
+chunk format:
+
+byte 0: bit 6 & 7 always set ($C0). Lower six bits contain loop count of
+the following note data.
+
+byte 1: $B0. Lower four bits: speed ????
+
+byte 2-...FF encountered: note #'s. each halftone is 2 apart.
+
+
+song header index table
+-----------------------
+
+00
+0d
+1a
+27
+34 / elevator music
+41
+4e
+5b
+68 / begin music
+75 / item music
+82 / brinstar music
+8f / tourian music

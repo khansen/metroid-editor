@@ -1,0 +1,6 @@
+- Graphics engine rewritten. Its output now matches the output of the
+internal game engine 100%
+- Map file is now loaded & saved as <romname>.MAP
+- Help file improved
+- You can change the start position on the map for each area
+- Minor bug fixes

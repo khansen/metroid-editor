@@ -1,0 +1,8 @@
+crash detection info
+
+bullets
+
+00-7F: bullets can't pass through these tiles
+80-9F: bullets can destroy these tiles, but they will reappear
+       after a short while
+A0-FF: bullets can pass through these tiles

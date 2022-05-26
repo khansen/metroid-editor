@@ -1,0 +1,36 @@
+        ROM MAP
+
+        +-------------+----------+----------------------+
+        | Offset      | Area     | Description          |
+        +-------------+----------+----------------------+
+        | 06284-062A3 | Brinstar | Palette              |
+        | 06324-06381 | Brinstar | Room pointer table   |
+        | 06382-063E5 | Brinstar | Struc pointer table  |
+        | 06451-06C93 | Brinstar | Room data            |
+        | 06C94-06EFF | Brinstar | Struc data           |
+        | 06F00-????? | Brinstar | Tile macros          |
+        | 0A18B-0A1AA | Norfair  | Palette              |
+        | 0A22B-0A286 | Norfair  | Room pointer table   |
+        | 0A287-0A2E8 | Norfair  | Struc pointer table  |
+        | 0A3BB-0ACC8 | Norfair  | Room data            |
+        | 0ACC9-0AEFB | Norfair  | Struc data           |
+        | 0AEFC-????? | Norfair  | Tile macros          |
+        | 0E72B-0E74A | Tourian  | Palette              |
+        | 0E7E1-0E80A | Tourian  | Room pointer table   |
+        | 0E80B-0E84A | Tourian  | Struc pointer table  |
+        | 0E8BF-0EC25 | Tourian  | Room data            |
+        | 0EC26-0EE58 | Tourian  | Struc data           |
+        | 0EE59-????? | Tourian  | Tile macros          |
+        | 12168-12187 | Kraid    | Palette              |
+        | 121E5-1222E | Kraid    | Room pointer table   |
+        | 1222F-1227C | Kraid    | Struc pointer table  |
+        | 122C7-12A7A | Kraid    | Room data            |
+        | 12A7B-12C41 | Kraid    | Struc data           |
+        | 12C42-????? | Kraid    | Tile macros          |
+        | 160FE-1611D | Ridley   | Palette              |
+        | 1618F-161E2 | Ridley   | Room pointer table   |
+        | 161E3-1621C | Ridley   | Struc pointer table  |
+        | 1624F-169CE | Ridley   | Room data            |
+        | 169CF-16B32 | Ridley   | Struc data           |
+        | 16B33-????? | Ridley   | Tile macros          |
+        +-------------+----------+----------------------+

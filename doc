@@ -1,0 +1,230 @@
+
+General Metroid ROM info
+
+The Metroid ROM is 128K in size, made up of eight 16K PRG banks (the
+game has no VROM). Each of the five game areas - Brinstar, Norfair,
+Tourian, Kraid's Hideout and Ridley's Hideout - has its own PRG bank.
+Each area bank contains data which defines that particular area;
+palettes, level data, enemy data, sprite data and so forth. When
+Samus enters a certain area, the proper ROM bank is loaded into $8000
+and stays there until Samus enters another area (or the NES is reset).
+The very last PRG bank contains the main game code, and is hard-wired
+to $C000 during gameplay. The other two PRG banks contain
+miscellaneous code and data, such as title screen data, password
+encoder / decoder and other tile data.
+
+Level map
+
+As you've experienced from playing Metroid, the game is in essence a
+myriad of long and short horizontal and vertical shafts. Internally,
+things work a bit different. At game code level, the areas of Metroid
+are just a series of different "rooms" which are pieced together to
+create a larger environment. One room as seen in the game is 256x240
+pixels (one NES screen) in size. It's very similar to how The Legend
+of Zelda works: The difference is that in Metroid, the screen scrolls
+according to the position of the main character (Samus), not when you
+touch a screen boundary like in Zelda. Therefore, you don't get the
+impression that you're travelling from one location on a map to
+another, but that's what's going on internally.
+
+When Samus is exploring the intricate areas of the planet SR388, she
+is continuously moving from one room to another, and changing her
+position on the internal level map. Which room she moves to is
+determined by this map. The level map is what chains the rooms
+together so that they form corridors and shafts; the way you see the
+game when you're playing it. There are a certain number of rooms
+available for each area of the game, and each room can be used any
+number of times. Each room has a specific number associated with it.
+The level map holds these numbers for each location on the map. The
+map itself is 32x32 bytes in size, one byte for each room.
+
+An important fact is that it's impossible to have two horizontal
+shafts or two vertical shafts directly next to eachother. Each time
+Samus goes through a door, the game switches to the opposite
+scrolling type. The only times that this does not hold true is when
+you enter or exit a special item room. In such cases the game
+continues to scroll horizontally.
+
+
+Level data
+
+The level data is the data that the room numbers in the level map
+reference; the visible objects on the screen. The programmers divided
+this data into three separate formats:
+
+1. Tile definitions
+
+2. Structure definitions
+
+3. Object definitions (room data)
+
+I'll explain each of these formats in detail, starting with the
+cornerstone of the level data: the tile definitions.
+	
+Tile definitions
+
+As you may or may not know, the NES screen is represented in NES PPU
+memory by a table of tile index values, 32x30 bytes in size. This
+table is called a Name Table. Each byte holds a value which
+references a tile in the Pattern Table; tiles themselves are 8x8
+pixels each. (See y0shi's "nestech.txt" for more technical
+information.) In order words, the Name Table does not hold actual
+tile data, it merely tells the PPU which tile to display at each
+8x8-pixel portion of the screen.
+
+If you study a typical room in Metroid, you will notice that the
+tiles together form larger patterns; rocks, vents, columns and so on.
+Each pattern consists of four tiles, forming a 2x2 tile grid. Since
+the same patterns are used many times, and their tile values always
+stay the same, specifying the four tile values for a certain pattern
+every time that pattern is to appear on the screen would be wasteful.
+Instead, the tile values are defined only once, and then each 2x2
+tile pattern is referenced by a byte value, exactly the same way as
+rooms are referenced in the level map. This also means that if you
+change the tile definitions for a certain pattern, every occurance of
+that pattern will change in the game.
+
+Structure definitions
+
+If you look beyond the 2x2 tile patterns in the many rooms of Metroid,
+you will see that they form even larger patterns, structures as I
+call them, which are of variable height and width. These structures
+are also defined only once and then referred to by a byte value in the
+object definitions (explained in the next section). The tile
+definitions described in the previous section are used to define
+them. The format of a structure is as follows:
+
+The first byte holds the horizontal "length"
+of the structure. It says how many 2x2 tile
+patterns to draw horizontally on the screen.
+
+The remaining bytes each hold a tile
+definition value. The exact number of bytes
+depends on the length byte. For example, the
+structure data 04 20 22 21 3F would draw the
+four 2x2 tile patterns 20, 22, 21 and 3F, in
+that order. As explained earlier, the actual
+tile values are defined elsewhere in the ROM.
+
+If the next byte is FF, it means the structure
+is finished. Otherwise, the X position is reset and
+the Y position is incremented by two tiles, and a
+new horizontal tile pattern sequence is specified, the
+format being the same as above.
+
+Just like the tile definitions, each structure definition
+has a unique byte value, regardless of its individual size.
+These values are used by the next and final format:
+
+Object definitions (room data)
+
+The object definitions are what one might call the
+real room data. To save even more space, the Metroid
+programmers decided to create a data format which only
+stores data for the sections of each room that are
+actually used. Initially, when a room is drawn, the whole
+Name Table is "cleared" (set to a totally transparent tile),
+in other words it's black. Then, the room objects are
+laid on top of eachother according to the room data (object definitions).
+
+The room data consists of a number of 3-byte chunks, each chunk
+defining a screen object, which are of the following format (values
+represented in binary):
+
+Byte 0:	%yyyyxxxx
+
+	yyyy = Y coordinate of graphical structure
+	xxxx = X coordinate of graphical structure
+
+	The coordinates of the upper left corner of
+	the structure. Multiply by 16 to get the 
+	real screen coordinates.
+
+Byte 1: %ssssssss
+
+	This byte holds the value of the graphical
+	structure to display. See explanations in
+	previous section.
+
+Byte 2: %------cc
+
+	cc = Palette number used when the tiles are
+	     displayed. Only the lower two bits of
+	     this byte are used, the upper six are
+	     ignored. The palette bits are written
+	     to the NES Attribute Table 
+	     (see "nestech.txt").
+
+These objects are drawn in the order they appear
+in the room data. When the value FD or FF is reached,
+it means the entire room has been set up.
+        
+
+Editing room objects
+
+Each room consists of a certain number of objects. In order to
+manipulate an object, you have to select the object to edit. To
+do this, point at the desired object, then click and hold the
+left mouse button. To change the object's position, simply move
+the mouse. To change the object type, click the right mouse button
+repeatedly until you find the desired type. Hold the Shift key
+while doing so to go backwards through the available object types.
+Press spacebar repeatedly to cycle through the 4 4-color palettes that
+the object can use.
+
+The objects are drawn in the order in which they appear in the
+room data, thus giving each object a unique priority. This can
+be used to make one object appear partially or completely behind
+another object.
+
+Editing enemies
+
+You edit enemies just like you edit room objects: Select the desired
+enemy and manipulate it as desired according to the description above.
+Pressing spacebar toggles between the normal edition and the "hard-type"
+edition of the enemy. The "hard-type" edition is twice as powerful is
+the normal edition.
+
+Map editor (Menu: Tools, Shortcut: Ctrl+M)
+
+Your current position on the map is indicated by a white cursor. You
+can move around on the map with the arrow keys, just like in the
+main editor window, but you can also use the left mouse button to
+select the map position you wish to go to. The color of a certain
+map position specifies which area it is part of. Color codes are as
+follows:
+
+Blue    -       Brinstar
+Green   -       Norfair
+Red     -       Tourian
+Purple  -       Kraid's Hideout
+Cyan    -       Ridley's Hideout
+
+Some of the map positions are black, meaning that they are currently
+unused in the game; Samus can't go there. Such positions can be
+activated simply by pressing the left mouse button on the position
+you want to activate. The area code of a certain map position can be
+changed by clicking on that position with the right mouse button.
+Press repeatedly to cycle through the 5 different area codes. If you
+want to remove an active map position, select that position, then
+press Delete.
+
+When you save the changes to your Metroid ROM, MetEdit saves the area
+codes for all the map positions to a file named "metedit.map", and
+this file is automatically loaded the next time you load the ROM.
+MetEdit needs this info to know what room data to associate with
+each map position, since this can't be retrieved directly from the
+ROM without actually running the game. This means that if you change
+an area code on the map through the map editor, you have to be sure
+that when this map position is accessed _when the game is actually
+played_, the proper ROM bank is already loaded into $8000. For
+example, if you change the area code at the position where you begin
+in Brinstar from Blue to Red (Tourian), MetEdit will think that this
+map position is actually part of Tourian - which it isn't.
+
+Item Editor (Menu: Tools, Shortcut: Ctrl+I)
+
+Select the area you wish to edit from the first listbox, and the item
+you want to change in the box below it. To change the map position of a
+selected special item, simply click on the desired position on the map
+to the right.

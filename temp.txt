@@ -1,0 +1,134 @@
+0563B-0564A: Enemy endurance table
+
+# of bullets each enemy type can endure
+
+
+Room data
+---------
+
+Byte 0: This is the initial palette # to fill the attribute table with.
+
+Doors
+-----
+
+Doors are stored together with the enemy data.
+
+02 XX
+
+Valid values for XX
+
+        A0: Right red door
+        A1: Right blue door
+        B0: Left red door
+        B1: Left blue door
+
+6000: Name Table #0
+6400: Name Table #1
+
+95D0: IMPORTANT!!! SPECIAL ROOMS!!!
+
+Every time you enter a new map position, the room # is checked to see if it's
+one of the 7 room numbers in this table. If it is, it means change to the
+"creepy music".
+
+$4F: MapY
+$50: MapX
+
+$FC: ScrollY
+$FD: ScrollX
+
+$FE: PPUCNT1 ($2001)
+$FF: PPUCNT0 ($2000)
+
+-----------------------
+
+063E6: Elevator to Tourian
+063F4: Missile container
+06403: Long beam
+06412: ???
+0641F: Ice beam
+0642C: Missile container
+0643A: Maru Mari
+
+Format:
+
+Byte 0: Map Ypos
+Byte 1: 16-bit pointer to next item's data
+Byte 3: Map Xpos
+
+-----------------------
+
+BCB0 (CPU): 4 pointers
+
+072CB-0732A: Pointer table
+
+Title screen: 00304-00677
+
+The data here sets up both Name Tables. Name Table #0 is used for the
+title ("METROID"), and Name Table #2 for the intro text. The data
+itself is stored as a number of rows, which are of the following format:
+
+Byte 0:         High byte of PPU address.
+Byte 1:         Low byte of PPU address.
+Byte 2:         Number of bytes to write.
+Byte 3-...:     The data chunk. The number of bytes equals
+                the value of byte 2.
+
+
+BRINSTAR
+
+055E7: Start xpos on map
+055E8: Start ypos on map
+
+062A4-06323: Something to do with palette fade-in when game is started
+047ED-?????: Something to do with character animation
+
+05570-055A7: Palette data pointers
+055A8: 16-bit address of special item data
+055AA: 16-bit address of room pointer table
+055AC: 16-bit address of structure pointer table
+055AE: 16-bit address of tile definitions
+06281: 16-bit PPU address of where to write the palette (3F00).
+
+Pointer table at 055AA (CPU addr = 0959A) is copied to 0003B-00048.
+
+1E75E: Code which loads byte at current map position.
+1EACA: Branch code for CMP #$FD (if reached enemy data).
+       Replace with F0 3A to remove enemies.
+1EA4F: Code that loads the room pointer.
+
+;------------[ Compress level data ]------------------------------------------
+
+1EAB6: Patch to 02 (Add 2 to room data pointer instead of 3).
+
+1EAA1: Patch to 20 DB FF (JSR $FFDB).
+
+1EAA6: Patch to 20 E1 FF (JSR $FFE1).
+
+The new subs to insert at $1FFEB (CPU address = $0FFDB):
+
+        rol
+        rol
+        rol
+        and #$03        ; return color bits in A
+        rts
+
+The new sub at $FFE1:
+
+        txa
+        and #$3F
+        asl a
+        tay
+        rts
+
+-----------------------
+
+06990 (CPU): Lower 4 bits contain area #. Written to $74.
+1CA40 (ROM): Array containing the corresponding ROM bank for each area.
+
+-----------------------
+
+05DF0-05F1D: Pointer table.
+05FD2-06280: Data belonging to pointer table.
+
+This data has something to do with the enemies.

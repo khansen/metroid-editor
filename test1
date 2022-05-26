@@ -1,0 +1,118 @@
+Thanks for downloading MetEdit for Windows 9X. To ensure maximum
+enjoyment of the program, make sure to read this help file thoroughly.
+
+Game map
+
+The areas in Metroid are built up of several "rooms" (a room = one NES
+screen, 256x240 pixels in size), which are chained together to form larger
+shafts and corridors. The internal game map basically tells which room to
+display at each map position. In the main editor window, you move around on
+the map by using the arrow keys. When you want to see exactly where you are
+on the map, or get to a certain spot in the game quickly, enter the map
+editor from the Tools menu. (More info on the map editor later.)
+
+Editing room objects
+
+Each room consists of a certain number of objects. In order to
+manipulate an object, you have to select the object to edit. To
+do this, point at the desired object, then click and hold the
+left mouse button. To change the object's position, simply move
+the mouse. To change the object type, click the right mouse button
+repeatedly until you find the desired type. Hold the Shift key
+while doing so to go backwards through the available object types.
+Press spacebar repeatedly to cycle through the 4 4-color palettes that
+the object can use.
+
+The objects are drawn in the order in which they appear in the
+room data, thus giving each object a unique priority. This can
+be used to make one object appear partially or completely behind
+another object.
+
+Editing enemies
+
+You edit enemies just like you edit room objects: Select the desired
+enemy and manipulate it as desired according to the description above.
+Pressing spacebar now toggles between the normal edition and the "hard-type"
+edition of the enemy. The "hard-type" edition is twice as powerful is
+the normal edition.
+
+You can change what room to display at a certain map position by using
+the -/+ keys.
+
+Status bar
+
+The status bar describes the current editing process. When an object isn't
+selected for editing, the current map position and the room number at this
+position is displayed. When you click on an object, the status bar will
+display relevant info about the object.
+
+Map Editor
+
+Your current position on the map is indicated by a white cursor. You
+can move around on the map with the arrow keys, just like in the
+main editor window, but you can also use the left mouse button to
+select the map position you wish to go to. The color of a certain
+map position specifies which area it is part of. Color codes are as
+follows:
+
+Blue    -       Brinstar
+Green   -       Norfair
+Red     -       Tourian
+Purple  -       Kraid's Hideout
+Cyan    -       Ridley's Hideout
+
+Some of the map positions are black, meaning that they are currently
+unused in the game; Samus can't go there. Such positions can be
+activated simply by pressing the left mouse button on the position
+you want to activate. The area code of a certain map position can be
+changed by clicking on that position with the right mouse button.
+Press repeatedly to cycle through the 5 different area codes. If you
+want to remove an active map position, select that position, then
+press Delete.
+
+When you save the changes to your Metroid ROM, MetEdit saves the area
+codes for all the map positions to a file named "metedit.map", and
+this file is automatically loaded the next time you load the ROM.
+MetEdit needs this info to know what room data to associate with
+each map position, since this can't be retrieved directly from the
+ROM without actually running the game. This means that if you change
+an area code on the map through the map editor, you have to be sure
+that when this map position is accessed _when the game is actually
+played_, the proper ROM bank is already loaded into $8000. For
+example, if you change the area code at the position where you begin
+in Brinstar from Blue to Red (Tourian), MetEdit will think that this
+map position is actually part of Tourian - which it isn't.
+
+Item Editor
+
+Select the area you wish to edit from the first listbox, and the item
+you want to change in the box below it. To change the map position of a
+selected special item, simply click on the desired position on the map
+to the right.
+
+Palette Editor
+
+The palette editor lets you change the colors of the background objects
+and enemies in the game. The area palettes are arranged in 4-color
+groups. (Each object can't have more than 4 different colors -
+actually only 3, because color #0 of each palette is transparent.)
+In the upper left portion of the window are the 4 background palettes
+in descending order, and to the right of them are the sprite palettes.
+The currently selected palette entry is indicated by a white cursor.
+Below the game palettes are all the available NES colors. To change a
+palette entry, simply click on the desired entry, then click on the
+desired NES color.
+
+Password Creator
+
+The password is generated based on which item boxes are checked in the
+item list. There are some item descriptions missing; if you figure out
+the meaning of some of the unknown bits, please send a brief description
+to me. Some of the password bits are maybe not used at all, though.
+
+You can also decode an existing password by entering it in the space next
+to the "Decode" button, then clicking that button. This will check the
+appropriate boxes in the item list according to the password data.
+
+A note about the game's starting point: Check both the "Norfair" and
+"Kraid's Hideout" box to begin in Tourian.

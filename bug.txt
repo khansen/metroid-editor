@@ -1,0 +1,50 @@
+The Metroid programmers' dirty laundry
+
+This is a collection of bugs and weird things discovered in the course of
+hacking Metroid and studying the game's code.
+
+There are three (3) locations on the original game map that are inaccesible
+in the game - I guess you could call these the *real* secret worlds of
+Metroid, even though they are just single rooms. The programmers or
+designers somehow forgot to remove them; the map locations in question are
+most likely left-overs from an early design.
+
+There are two rooms in Brinstar which aren't used at all: Room 2Ah and 2Dh.
+The only thing they do is waste valuable ROM space which could have been
+used for something else.
+
+Even though the programmers seem to have gone out of their way to make data
+formats as tight as possible, there is room for considerable improvements in
+some cases. The best example of this is the room data format. Each room
+object is three bytes in size: One byte containing the object's X,Y position
+on the screen, another containing the object's type, and a third byte
+holding the object's palette selector. The palette selector is a 2-bit value,
+while the object type value never goes higher than 6 bits. This means that
+the palette value and type value could easily be combined into one byte,
+thereby shrinking the room data down to 2/3 of its original size! I have
+written a patcher which compresses the data this way, and makes the
+necessary changes to the game code - it works perfectly.
+
+For each room, there is a default palette selector. This is (supposed to be)
+the background palette number that is used the most in that particular room.
+All the entries in the Attribute Table are set to this value before the room
+objects are set up. The idea behind this is that the object routine won't
+have to modify the attribute table as many times afterwards, because most of
+the objects use the default palette. But because of programmer sloppiness,
+this isn't true in many cases: Some rooms have the wrong default palette
+enabled. I can think of two possible reasons for this. One is that the
+designers changed some rooms completely around, and modified the palette
+number of most of the room objects, but then the programmers forgot to
+update the default palette number. Another possible reason is that while
+some rooms have the correct default palette according to the highest
+_number_ of objects that share the same palette, the palette # is incorrect
+if you take the _size_ of the objects into account. For example, six
+2x2-tile objects (with the same palette) together occupy a smaller region of
+the screen than just one 16x16-tile object (with a different palette).
+Therefore, the default palette should be that of the one large structure,
+but it's not. In such cases, setting up the room will be _slower_, because
+the piece of code which modifies the Attribute Table will be executed for
+almost every objects.
+
+The conclusion is that Metroid uses lots of (in theory) clever tricks, but
+many of them fail because of sloppiness in the final process.

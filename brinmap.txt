@@ -1,0 +1,71 @@
+
+  Brinstar ROM map
+
+  +-------------+---------------------------------------+
+  | Offset      | Description                           |
+  +-------------+---------------------------------------+
+  | 04010-04581 | Game code                             |
+  | 04582-0461A | Animation data                        |
+  | 0461B-046EE | Frame pointer table #1                |
+  | 046EF-0470C | Sprite placement pointer table #1     |
+  | 0470D-047DA | Sprite placement data #1              |
+  | 047DB-04B22 | Frame data #1                         |
+  | 04B23-04D6F | Game code                             |
+  | 04D70-0556F | 128 graphic tiles                     |
+  | 05570-055A7 | Palette data pointer table            |
+  | 055A8-055B7 | Ptr pointer table                     |
+  | 055B8-055D5 | Game code                             |
+  | 055DE-055F4 | Misc. data                            |
+  | 055F5-055FA | Game code                             |
+  | 055FB-0561A | Enemy AI pointer table                |
+  | 0561B-056EA | Misc. data tables                     |
+  | 056EB-05732 | Pointer table 6                       |
+  | 0573B-057B6 | Misc. data tables                     |
+  | 057B7-057BE | Pointer table 3                       |
+  | 057BF-057E0 | Tile regeneration pointer table       |
+  | 057E1-057FE | ???                                   |
+  | 057FF-05974 | Data 6                                |
+  | 05975-059B0 | Data 3                                |
+  | 059B1-05D45 | Enemy AI code                         |
+  | 05D46-05D79 | Tile regeneration data                |
+  | 05D7A-05DEF | Enemy animation data                  |
+  | 05DF0-05F1D | Frame pointer table #2                |
+  | 05F1E-05F3D | Sprite placement pointer table #2     |
+  | 05F3E-05FD1 | Sprite placement data #2              |
+  | 05FD2-06280 | Frame data #2                         |
+  | 06281-06323 | Palette data                          |
+  | 06324-06381 | Room pointer table                    |
+  | 06382-063E5 | Structure pointer table               |
+  | 063E6-06450 | Special item data                     |
+  | 06451-06C93 | Room data                             |
+  | 06C94-06EFF | Structure data                        |
+  | 06F00-06FFF | Tile macros                           |
+  | 07010-07066 | Brinstar music, track #0              |
+  | 07067-070D0 | Brinstar music, track #1              |
+  | 070D1-0713A | Brinstar music, track #2              |
+  | 0713B-07144 | Brinstar music, track #3              |
+  | 07210-07??? | Noise register data                   |
+  | 0732B-07CBF | Music player code                     |
+  | 07CC0-07CC7 | Volume envelope pointer table         |
+  | 07CC8-07D40 | Volume envelope data                  |
+  | 07D41-07DDC | Song headers                          |
+  | 07DDD-07DE9 | Elevator music, track #2              |
+  | 07DEA-07DEB | Elevator music, track #0              |
+  | 07DEC-07E06 | Elevator music, track #1              |
+  | 07E07-07E17 | Item music, track #0                  |
+  | 07E18-07E1C | Item music, track #2                  |
+  | 07E1D-07E2C | Item music, track #1                  |
+  | 07E2D-07E45 | Begin music, track #1                 |
+  | 07E46-07E4D | Begin music, track #2                 |
+  | 07E4E-07E56 | Begin music, track #0                 |
+  | 07E57-07E68 | Tourian music, track #1               |
+  | 07E69-07E71 | Tourian music, track #0               |
+  | 07E72-07E86 | Tourian music, track #2               |
+  | 07E87-07F06 | Frequency table                       |
+  | 07F07-07F28 | Note length table                     |
+  | 07F29-07FAE | Game code                             |
+  | 07FAF-07FBF | FREE SPACE! WOOHOO :P                 |
+  | 07FC0-07FE4 | Game code                             |
+  | 07FE5-08009 | FREE SPACE! WOOHOO :P                 |
+  | 0800A-0800F | Code vectors                          |
+  +-------------+---------------------------------------+
